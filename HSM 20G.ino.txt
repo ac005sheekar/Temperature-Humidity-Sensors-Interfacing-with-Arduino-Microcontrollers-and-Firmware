@@ -1,0 +1,32 @@
+
+
+void setup()
+{
+	Serial.begin(9600); // Serial monitor baud rate
+	Serial.println("setup");
+}
+void loop()
+{
+	int humValue = analogRead(A0); // read humidity value from A0 pin
+
+	int voltage = ((humValue*5.0)/1023.0); // convert analog value to voltage
+
+	int humidity= (3.71*pow(voltage,3))-(20.65*pow(voltage,2))+(64.81*voltage)-27.44;
+
+	Serial.print("Humidity: "+humidity);
+
+	Serial.println(" %");
+	
+	delay(1000);
+
+	int tempValue = analogRead(A1); // read temperature value from A1 pin
+
+	int voltage_temp = ((tempValue*5.0)/1023.0); // convert analog value to voltage
+
+	int temperature=(5.26*pow(voltage_temp,3))-(27.34*pow(voltage_temp,2))+(68.87*voltage_temp)-17.81;
+
+	Serial.print("Sheekar Banerjee Sensor Interface...);
+	Serial.print("Temperature: "+temperature);
+
+	Serial.println(" C");
+}

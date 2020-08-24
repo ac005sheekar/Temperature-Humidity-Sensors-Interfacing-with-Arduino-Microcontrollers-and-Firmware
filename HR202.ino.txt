@@ -1,0 +1,139 @@
+#include <SparkFun_HIH4030.h>    //  Include header files for I2C connectivity support
+
+#include <Wire.h>                
+
+
+
+int tempAddress = 0x48;          //  I2C: TMP102 Slave Address with ADD0 grounded
+
+float temp = 0;                  //  Temperature value either Static or Sensor Reading
+
+
+
+int tempSensor = 0;              //  If you are using Temperature Sensor (0 = No / 1 = YES)
+
+
+
+#define HIH4030_OUT A0           //  Static Variables where DO (Output Pin) is connected with Arduino Analog Pin A0
+
+
+#define HIH4030_SUPPLY 5         //  Static Variables where VCC is connected with Arduino 5V Pin
+
+
+HIH4030 sensorSpecs(HIH4030_OUT, HIH4030_SUPPLY);  // Library Variables
+
+
+void setup(void) {              
+
+  Serial.begin(9600);              
+
+  Wire.begin();                    
+
+
+}
+
+
+void printData(HIH4030 sensor, float temperature) {
+
+
+  Serial.print("Temperature = ");        //  Print Temperature
+
+  Serial.print(temperature);
+
+  Serial.print(" C ("); Serial.print((temperature * 9 / 5) + 32); Serial.println(" F)");  
+
+  Serial.print("Sensor Voltage = ");    // Print Sensor Voltage
+
+  Serial.print(sensor.vout());          
+
+  Serial.println(" V");
+
+  Serial.print("Relative Humidity = ");   // Print Relative Humidity
+
+  Serial.print(sensor.getSensorRH());
+
+  Serial.println(" %");
+
+  Serial.print("True Relative Humidity = ");   //  Print True Relative Humidity
+
+  Serial.print(sensor.getTrueRH(temperature));
+
+  Serial.println(" %");
+
+  delay(2000);
+
+}
+
+
+void loop(void) {              // It is for Repetitive Execution of the code
+
+
+  if (tempSensor == 1)        
+
+  {
+
+    temp = getTemperature();   // Display the value of Temperature   
+
+  }
+
+  else if (tempSensor == 0)    
+
+  {
+
+    temp = 25;                 // Set the default value
+
+   
+
+  }
+
+  else
+
+  {
+
+    while (tempSensor != 1 || tempSensor != 0)  // When the temperature Sensor is neither 1 or 0
+
+    {
+
+      Serial.println("ERROR: tempSensor Value Out of Range");  // Print Error
+
+    }
+
+  }
+
+
+  printData(sensorSpecs, temp);   // Print Sensor Readings
+
+  Serial.println("");             // Return Space between readings
+
+  delay(100);                     // Delays the Serial Output
+
+
+}
+
+
+
+float getTemperature() {        // Method to get temperature value
+
+
+  Wire.requestFrom(tempAddress, 2);   // It is used by master to request bytes from a slave
+
+                                                                  device. The bytes may then be retrieved with the
+
+                                                                  available() and read() functions.                                     
+
+
+  byte MSB = Wire.read();             //  To read the Most Significant Byte
+
+  byte LSB = Wire.read();             //  To read the Least Significant Byte
+
+  int TemperatureSum = ((MSB << 8) | LSB) >> 4;   // Calculate the Temperature
+
+
+  float celsius = TemperatureSum * 0.0625;     // Convert the Temperature into Celsius
+
+  return celsius;                              // Display the value of Celsius
+
+
+}
+
+
