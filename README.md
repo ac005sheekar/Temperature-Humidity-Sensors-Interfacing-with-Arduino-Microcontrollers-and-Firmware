@@ -1,0 +1,2 @@
+# Temperature-Humidity-Sensors-Interfacing-with-Arduino-Microcontrollers
+This IoT based embedded system project focuses over Temperature and Humidity Sensors like DHT11, HR202, HSM 20G, Humidity Detection Sensor Module, K Type Thermocouple Sensor Probe, LM35, MAX6675 Module, PT100 Platinum Resister Temperature Sensor, RTD PT-100, Si7021 Industrial High Precision and Waterproof DS18B20 Digital High Precision Thermal Sensor with the interfacing codes and mechanisms. All of the sensor data mechanism were fully functional and mostly congested with lower precision.
